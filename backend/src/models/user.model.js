@@ -1,5 +1,5 @@
 
-const query = require('../db/db-connection');
+const { query } = require('../db/db-connection');
 const { multipleColumnSet } = require('../utils/common.utils');
 const Role = require('../utils/userRoles.utils');
 const HttpException = require('../utils/HttpException.utils');

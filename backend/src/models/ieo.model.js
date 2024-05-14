@@ -1,6 +1,6 @@
 /* learn more: https://github.com/testing-library/jest-dom // @testing-library/jest-dom library provides a set of custom jest matchers that you can use to extend jest. These will make your tests more declarative, clear to read and to maintain.*/
 
-const query = require('../db/db-connection');
+const { query}  = require('../db/db-connection');
 const { multipleColumnSet } = require('../utils/common.utils');
 const Role = require('../utils/userRoles.utils');
 const HttpException = require('../utils/HttpException.utils');

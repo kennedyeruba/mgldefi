@@ -1,58 +1,52 @@
 const dotenv = require('dotenv');
+const mysql2 = require('mysql2/promise');
+
 dotenv.config();
-const mysql2 = require('mysql2');
 
 class DBConnection {
-    constructor() {
-        this.db = mysql2.createPool({
-            host: process.env.DB_HOST,
-            user: process.env.DB_USER,
-            password: process.env.DB_PASS,
-            database: process.env.DB_DATABASE
-        });
-
-        this.checkConnection();
+    constructor(config) {
+        this.pool = mysql2.createPool(config);
+        this.query = this.query.bind(this);
+        this.addListeners();
     }
 
-    checkConnection() {
-        this.db.getConnection((err, connection) => {
-            if (err) {
-                if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-                    console.error('Database connection was closed.');
-                }
-                if (err.code === 'ER_CON_COUNT_ERROR') {
-                    console.error('Database has too many connections.');
-                }
-                if (err.code === 'ECONNREFUSED') {
-                    console.error('Database connection was refused.');
-                }
-            }
-            if (connection) {
-                connection.release();
-            }
-            return
+    addListeners() {
+        this.pool.on('connection', () => {
+            console.log('Database connected!');
+        });
+
+        this.pool.on('error', (err) => {
+            const customErrorMessages = {
+                'PROTOCOL_CONNECTION_LOST': 'Database connection was closed.',
+                'ER_CON_COUNT_ERROR': 'Database has too many connections.',
+                'ECONNREFUSED': 'Database connection was refused.'
+            };
+            
+            console.error('Database connection error:', customErrorMessages[err.code] || err.message);
         });
     }
 
-    query = async (sql, values) => {
-        
-        return new Promise((resolve, reject) => {
-            const callback = (error, result) => {
-                if (error) {
-                    reject(error);
-                    return;
-                }
-                resolve(result);
-            }
-            // execute will internally call prepare and query
-            this.db.execute(sql, values, callback);
-        }).catch(err => {
+    async query(sql, values) {
+        try {
+            const [rows, fields] = await this.pool.execute(sql, values);
+            return rows;
+        } catch (error) {
             const mysqlErrorList = Object.keys(HttpStatusCodes);
             // convert mysql errors which in the mysqlErrorList list to http status code
-            err.status = mysqlErrorList.includes(err.code) ? HttpStatusCodes[err.code] : err.status;
+            error.status = mysqlErrorList.includes(error.code) ? HttpStatusCodes[error.code] : error.status;
+            throw error;
+        }
+    }
 
-            throw err;
-        });
+    async close() {
+        try {
+            // Close the database connection pool
+            await this.pool.end();
+            console.log('[Database connection] pool closed.');
+        } catch (error) {
+            console.error('Error closing database connection pool:', error);
+            throw error;
+        }
     }
 }
 
@@ -62,5 +56,11 @@ const HttpStatusCodes = Object.freeze({
     ER_DUP_ENTRY: 409
 });
 
+const config = {
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_DATABASE
+}
 
-module.exports = new DBConnection().query;
+module.exports = new DBConnection(config);

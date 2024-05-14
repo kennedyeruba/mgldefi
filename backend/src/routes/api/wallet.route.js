@@ -25,6 +25,7 @@ router.post('/access/keyphrase', auth(), accessWalletWithKeyPhraseSchema, awaitH
 router.post('/addtoken', auth(), addTokenSchema, awaitHandlerFactory(WalletController.addToken));
 router.post('/getbalance', auth(), getBalanceSchema, awaitHandlerFactory(WalletController.getBalance));
 router.post('/getprice', auth(), getPriceSchema, awaitHandlerFactory(WalletController.getPrice));
+router.post('/gettokenprice', auth(), getPriceSchema, awaitHandlerFactory(WalletController.getTokenPrice));
 router.post('/getassets', auth(), getAssetsSchema, awaitHandlerFactory(WalletController.getAssets));
 router.post('/sendtoken', auth(), sendTokenSchema, awaitHandlerFactory(WalletController.sendToken));
 router.post('/receivetoken', auth(), awaitHandlerFactory(WalletController.receiveToken));

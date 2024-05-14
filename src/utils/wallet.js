@@ -53,6 +53,40 @@ export default class Wallet {
         decryptedKey += decipher.final("utf-8");
         return decryptedKey
     }
+
+    async connectColdWallet() {
+        try {
+            if (window.ethereum) {
+                await window.ethereum.request({ method: 'eth_requestAccounts' });
+                const web3 = new Web3(window.ethereum);
+                const accounts = await web3.eth.getAccounts();
+        
+                if (accounts.length > 0) {
+                    return accounts[0];
+                } else {
+                    return null;
+                }
+            } else {
+                return null;
+            }
+        } catch (error) {
+            console.error('Error connecting to MetaMask:', error);
+            return null;
+        }
+    }
+
+    async checkWalletConnection () {
+        if (window.ethereum) {
+          const web3 = new Web3(window.ethereum);
+          const accounts = await web3.eth.getAccounts();
+  
+          if (accounts.length > 0) {
+            return accounts[0];
+          }
+        }
+        return null;
+    }
+
     static async sendToken(privateKey, source, destination, token, amount,rpcUrl,tokenList) {
         let web3 = new Web3(rpcUrl);
         try {

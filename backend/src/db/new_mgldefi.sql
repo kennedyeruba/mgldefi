@@ -37,7 +37,11 @@ CREATE TABLE `email_verify` (
 
 LOCK TABLES `email_verify` WRITE;
 /*!40000 ALTER TABLE `email_verify` DISABLE KEYS */;
-INSERT INTO `email_verify` VALUES (1,'1234sdrersa@gmail.com','9387');
+INSERT INTO `email_verify` VALUES 
+(1, '1234sdrersa@gmail.com','9387'),
+(2, 'john@gmail.com','6543'),
+(3, 'mike@gmail.com','8647'),
+(4, 'jeff@gmail.com','4683');
 /*!40000 ALTER TABLE `email_verify` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -210,7 +214,7 @@ CREATE TABLE `transaction` (
   `token` varchar(42) NOT NULL,
   `amount` float NOT NULL,
   `network` varchar(20) NOT NULL,
-  `to_admin` tinyint(1) NOT NULL
+  `to_admin` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;

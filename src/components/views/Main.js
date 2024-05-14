@@ -9,7 +9,7 @@ import PairCardButton from "../component/PairCardButton";
 import Nav from "../component/Nav"
 import openNotification from "../helpers/notification";
 
-function Main(props) {
+function Main({ coinData }) {
   const {t,i18n} = useTranslation();
   const pair=[
     {title:"BNB/BUSD",percent:1.58,amount1:553.9,amount2:553.46},
@@ -64,7 +64,7 @@ function Main(props) {
                  transition={{ duration: 4 }}
                >
              {
-               props.coinData.map((item,index)=>(
+               coinData.map((item,index)=>(
 
                  <PairCardButton key={index} title={item.name} percent={item.percent} amount1={item.price}/>
                ))
@@ -79,12 +79,12 @@ function Main(props) {
                  transition={{ duration: 4 }}
                >
                <div className="flex justify-between mb-4">
-                 <PairCardButton title={props.coinData[0].name} percent={props.coinData[0].percent} amount1={props.coinData[0].price} />
-                 <PairCardButton title={props.coinData[1].name} percent={props.coinData[1].percent} amount1={props.coinData[1].price} />
+                 <PairCardButton title={coinData[0].name} percent={coinData[0].percent} amount1={coinData[0].price} />
+                 <PairCardButton title={coinData[1].name} percent={coinData[1].percent} amount1={coinData[1].price} />
                </div>
                <div className="flex justify-between">
-                 <PairCardButton title={props.coinData[2].name} percent={props.coinData[2].percent} amount1={props.coinData[2].price} />
-                 <PairCardButton title={props.coinData[3].name} percent={props.coinData[3].percent} amount1={props.coinData[3].price}/>
+                 <PairCardButton title={coinData[2].name} percent={coinData[2].percent} amount1={coinData[2].price} />
+                 <PairCardButton title={coinData[3].name} percent={coinData[3].percent} amount1={coinData[3].price}/>
                </div>
                  
            </motion.div>

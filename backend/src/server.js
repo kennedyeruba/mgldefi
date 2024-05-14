@@ -12,6 +12,8 @@ const subscriberRouter = require('./routes/api/subscriber.route');
 const ieo = require('./routes/api/ieo.route');
 const p2p = require('./routes/api/p2p.route');
 const WalletService = require('./services/wallet.service');
+const db = require('./db/db-connection');
+
 cron.schedule('*/10 * * * *', () => {
   WalletService.updateTopTokens().then(() => {
     console.log("Top Token data updated")
@@ -43,7 +45,6 @@ app.use(
   );
 
 const port = Number(process.env.PORT || 3000);
-app.use(cookieParser());
 
 app.use(`/api/users/`, userRouter);
 app.use(`/api/wallets/`, walletRouter);
@@ -61,8 +62,28 @@ app.all('*', (req, res, next) => {
 app.use(errorMiddleware);
 
 // starting the server
-app.listen(port, () =>
-    console.log(`🚀 Server running on port ${port}!`));
+const server = app.listen(port, async () => {
+  console.log(`🚀 Server running on port ${port}!`);
+
+  await db.pool.getConnection();
+});
+
+// Gracefully handle shutdown
+process.on('SIGINT', async () => {
+  console.log('Closing server...');
+  server.close(async () => {
+    console.log('Server closed.');
+    console.log('Closing database connection pool...');
+    try {
+      await db.close();
+      console.log('Database connection pool closed.');
+      process.exit(0);
+    } catch (error) {
+      console.error('Error closing database connection pool:', error);
+      process.exit(1);
+    }
+  });
+});
 
 
 module.exports = app;

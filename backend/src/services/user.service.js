@@ -67,6 +67,7 @@ class UserService {
         if (!this.emailValidation(email)) {
             return {response: false, message: "Email validation failed.", data:null}
         }
+
         let verificationCode = this.makeRandomString(4);
 
         const subject = i18n.__({phrase: "MGL Exchange: Email Verification", locale: locale})
@@ -259,7 +260,7 @@ class UserService {
         }
         //check invite code
         if (parseInt(rawData.invite_code) !== 0) {
-            let inviter = await UserModel.findOne({id:parseInt(rawData.invite_code)});
+            let inviter = await UserModel.findOne({invite_code: parseInt(rawData.invite_code)});
             if (!inviter) {
                 return {response:false, message:"Invite code wrong", data:null}
             }
@@ -363,13 +364,7 @@ class UserService {
     
     static emailValidation(enteredEmail){
         var mail_format = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-
-        if(enteredEmail.match(mail_format))
-        {
-            return true;
-        } else {
-            return false;
-        }
+        return enteredEmail.match(mail_format)
     }
 }
 

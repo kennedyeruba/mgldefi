@@ -44,27 +44,27 @@ function Wallet() {
   const walletData = useContext(WalletContext);
   const wallet = new WalletUtil()
   const serverUrl =SERVER_URL;
-  let frequent;
 
 
-  useEffect(()=>{
-    if(id)
-      setIdx(parseInt(id));
+  useEffect(() => {
+    if(id) setIdx(parseInt(id));
     getAssets();
     getTransaction();
-    frequent=setInterval(getAssets, 1000 * 60);
+    let frequent = setInterval(getAssets, 1000 * 60);
     if(!publicKey)
       openNotification("Wallet Access failed.","You are not allowed!",false,()=>window.location.href="/walletMain")
     return () => {
       clearInterval(frequent);
     }
   },[])
-  useEffect(async()=>{
+
+  useEffect(async () => {
     if(id && presaleToken && chainId){
       let findNetwork = networks.filter(item=>item.chainId===chainId);
       let info = await getTokenBaseInfo(presaleToken, findNetwork[0].url);
       // let price = await getTokenPriceInUsd(findNetwork[0], presaleToken);
       let price = 0.018;
+      
       presaleData.setPresaleData({
         ...info,
         id:id,
@@ -74,9 +74,9 @@ function Wallet() {
       })
     }
   },[id,presaleToken,chainId])
-  const initFunction=async()=>{
 
-  }
+  const initFunction=async()=>{}
+
   const getTokenInfo=async()=>{
  
       setConnection(true);
@@ -112,8 +112,8 @@ function Wallet() {
     return network.tokenList[tokenAddress].symbol;
   }
 
-  const getAssets=async ()=>{
-      walletData.getTokenList();
+  const getAssets = async () => {
+      // walletData.getTokenList();
       setConnection(true);
       setLoading(true);
       setAuthToken(localStorage.jwtToken)
@@ -135,7 +135,7 @@ function Wallet() {
   }
 
   const getTransaction=async ()=>{
-      walletData.getTransaction();
+      // walletData.getTransaction();
       
       setConnection(true);
       setAuthToken(localStorage.jwtToken)

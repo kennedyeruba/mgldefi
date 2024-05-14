@@ -55,7 +55,7 @@ function App() {
               <Route path="/wallet/:id/:presaleToken/:chainId" element={< Wallet/>} />
             </Route>
           </Route>
-          <Route path="/wallet/:id" element={< Wallet/>} />
+          {/* <Route path="/wallet/:id" element={< Wallet/>} /> */}
           <Route path="/p2p" element={< BuySell/>} />
           <Route path="/userinfo" element={< UserInfo/>} />
           <Route path="/forgotpassword" element={< ForgotPassword/>} />

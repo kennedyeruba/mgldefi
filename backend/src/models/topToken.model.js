@@ -1,6 +1,6 @@
 /* learn more: https://github.com/testing-library/jest-dom // @testing-library/jest-dom library provides a set of custom jest matchers that you can use to extend jest. These will make your tests more declarative, clear to read and to maintain.*/
 
-const query = require('../db/db-connection');
+const { query } = require('../db/db-connection');
 const { multipleColumnSet } = require('../utils/common.utils');
 class TopTokenModel {
     tableName = 'top_tokens';
@@ -23,10 +23,16 @@ class TopTokenModel {
 
     create = async ({name, symbol, price, daily_percent}) => {
         try {
-            const sql = `INSERT INTO ${this.tableName}
-            (name, symbol, price, daily_percent) VALUES (?,?,?,?)`;
+            const sql = `
+                INSERT INTO ${this.tableName}
+                (name, symbol, price, daily_percent) 
+                VALUES (?,?,?,?)`
+            ;
+            
             const result = await query(sql, [name, symbol, price, daily_percent]);
             const affectedRows = result ? result.affectedRows : 0;
+
+            console.log('[TopTokenModel] New Token Created', result);
 
             return affectedRows;
         } catch (error) {

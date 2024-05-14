@@ -29,14 +29,14 @@ function Home() {
   const {t,i18n} = useTranslation();
   const [coinData,setCoinData] = useState(pair);
   
-  const stepData = [
-    {picUrl:"/assets/img/step1.png",step:t("Step1"),subtitle:t("Get Started")},
-    {picUrl:"/assets/img/step2.png",step:t("Step2"),subtitle:t("Confirmation")},
-    {picUrl:"/assets/img/step3.png",step:t("Step3"),subtitle:t("Identify Verification")},
-    {picUrl:"/assets/img/step4.png",step:t("Step4"),subtitle:t("Buy Cryptocurrency")},
-    {picUrl:"/assets/img/step5.png",step:t("Step5"),subtitle:t("Sell Cryptocurrency")},
-    {picUrl:"/assets/img/step6.png",step:t("Step6"),subtitle:t("Send and Receive")},
-  ]
+  // const stepData = [
+  //   {picUrl:"/assets/img/step1.png",step:t("Step1"),subtitle:t("Get Started")},
+  //   {picUrl:"/assets/img/step2.png",step:t("Step2"),subtitle:t("Confirmation")},
+  //   {picUrl:"/assets/img/step3.png",step:t("Step3"),subtitle:t("Identify Verification")},
+  //   {picUrl:"/assets/img/step4.png",step:t("Step4"),subtitle:t("Buy Cryptocurrency")},
+  //   {picUrl:"/assets/img/step5.png",step:t("Step5"),subtitle:t("Sell Cryptocurrency")},
+  //   {picUrl:"/assets/img/step6.png",step:t("Step6"),subtitle:t("Send and Receive")},
+  // ]
   const fetchData = async ()=>{
      try {
             axios.get(SERVER_URL+'wallets/gettoptokens')

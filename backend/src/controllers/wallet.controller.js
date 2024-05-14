@@ -64,6 +64,15 @@ class WalletController {
         }
     }
 
+    getTokenPrice = async (req, res, next) => {
+        try {
+            const result = await WalletService.getTokenPrice(req.body);
+            res.send(result)
+        } catch (error) {
+            next(error)
+        }
+    }
+
     getAssets = async (req, res, next) => {
         try {
             const result = await WalletService.getAssets(req.body, req.currentUser.id);

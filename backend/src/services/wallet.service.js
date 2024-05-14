@@ -187,6 +187,11 @@ class WalletService {
         }
     }
 
+    static async getTokenPrice(rawData) {
+        const result = await new Wallet().getSingleTokenPrice(rawData.symbol);
+        return {response:true, message:"Success", data:result}
+    }
+
     static async updateTopTokens() {
         const result = await new Wallet().updateTopToken();
         const tokenList = await TopTokenModel.find();
